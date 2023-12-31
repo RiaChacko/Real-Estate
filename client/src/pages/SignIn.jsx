@@ -4,6 +4,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {signInSuccess,signInStart,signInFailure} from '../redux/user/userSlice.js'
+import OAuth from '../components/OAuth.jsx';
 export default function SignIn() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -61,7 +62,8 @@ export default function SignIn() {
         <input type='email' placeholder='email' className='border p-3 rounded-lg' id='email' onChange={handleChange}></input>
         <input type='password' placeholder='password' className='border p-3 rounded-lg' id='password' onChange={handleChange}></input>
         <button className='bg-slate-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80' disabled={loading}>{loading?'Loading...' : 'Sign In'}</button>
-        <button className='bg-red-700 text-white p-3 rounded-lg uppercase hover:opacity-95 disabled:opacity-80' disabled={loading}>{loading?'Loading...' : 'Continue with Google'}</button>
+        <OAuth/>
+
       </form>
       <div className='flex gap-2 mt-5'>
         <p>Don't have an account?</p>
