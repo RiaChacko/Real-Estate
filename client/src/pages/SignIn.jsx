@@ -2,11 +2,13 @@ import React, { useState } from 'react'
 import {Link, json} from "react-router-dom";
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import {signInSuccess,signInStart,signInFailure} from '../redux/user/userSlice.js'
 export default function SignIn() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [formState,setFormState] = useState({});
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const {loading,error}=useSelector((state)=>state.user);
   const handleChange=(e)=>{
     setFormState({
       ...formState,
@@ -21,7 +23,7 @@ export default function SignIn() {
     try {
 
       e.preventDefault();
-      setLoading(true);
+      dispatch(signInStart());
       const res = await fetch('http://localhost:3000/api/auth/signin',
       {
         method:'POST',
@@ -34,21 +36,18 @@ export default function SignIn() {
       );
       const data = await res.json();
       if(data.success ===false){
-        setError(data.message);
-        setLoading(false);
+        dispatch(signInFailure(data.message));
         return;
       
         
      
       }
-      setLoading(false);
-      setError(null);
+      dispatch(signInSuccess(data));
       console.log(data);
       navigate("/");
       
     } catch (error) {
-      setLoading(false);
-      setError(error.message);
+      dispatch(signInFailure(error.message));
       
     }
    
